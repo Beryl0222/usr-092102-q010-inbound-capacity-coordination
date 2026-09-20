@@ -1,0 +1,9 @@
+{
+  "event_id": "092102-010-sample-001",
+  "event_type": "CAPACITY_REPORTED",
+  "aggregate_type": "capacity_source",
+  "aggregate_id": "inbound_capacity_coordination-001",
+  "occurred_at": "2026-09-20T12:00:00+08:00",
+  "version": 1,
+  "summary": "入境游承载协调领域样例"
+}
