@@ -1,0 +1,1242 @@
+[
+  {
+    "event_id": "zjj-cap-ticket-01",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-tickets-main",
+    "occurred_at": "2026-10-03T12:00:00+08:00",
+    "version": 1,
+    "summary": "景区主门票分时可售数量上报",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "scenic_area",
+      "location_id": "gate-main",
+      "window": {
+        "starts_at": "2026-10-03T12:00:00+08:00",
+        "ends_at": "2026-10-03T12:30:00+08:00",
+        "granularity_minutes": 30
+      },
+      "metric": {
+        "code": "tickets_sellable",
+        "unit": "张",
+        "basis": "measured",
+        "counting_rule": "当前分时剩余可售票，不含已预约未入园"
+      },
+      "sellable_quantity": 1200,
+      "realtime_occupancy": null,
+      "safety_headroom": null,
+      "confidence": {
+        "level": "high"
+      },
+      "driver_factors": {
+        "large_groups": 3,
+        "independent_travelers_estimate": 1400,
+        "visa_policy_change": {
+          "policy_id": "VISA-FREE-240H-EXT",
+          "expected_delta_pct": 18,
+          "effective_from": "2026-10-03T00:00:00+08:00"
+        }
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:00:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:00:00+08:00",
+        "sensor_id": "ticketing-cloud"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-onsite-01",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-onsite-core",
+    "occurred_at": "2026-10-03T12:00:00+08:00",
+    "version": 1,
+    "summary": "核心景区实时占用上报",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "transport",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "scenic_area",
+      "location_id": "core-zone",
+      "window": {
+        "starts_at": "2026-10-03T12:00:00+08:00",
+        "ends_at": "2026-10-03T12:15:00+08:00",
+        "granularity_minutes": 15
+      },
+      "metric": {
+        "code": "persons_on_site",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "闸机计数，含免签随团旅客，不含工作人员"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 6100,
+      "safety_headroom": 1900,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:00:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:00:00+08:00",
+        "sensor_id": "gate-counters"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-onsite-02",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-onsite-core",
+    "occurred_at": "2026-10-03T12:30:00+08:00",
+    "version": 2,
+    "summary": "核心景区实时占用继续上升",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "transport",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "scenic_area",
+      "location_id": "core-zone",
+      "window": {
+        "starts_at": "2026-10-03T12:15:00+08:00",
+        "ends_at": "2026-10-03T12:30:00+08:00",
+        "granularity_minutes": 15
+      },
+      "metric": {
+        "code": "persons_on_site",
+        "unit": "人",
+        "basis": "measured"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 7300,
+      "safety_headroom": 700,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:30:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:30:00+08:00",
+        "sensor_id": "gate-counters"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-ticket-02",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-tickets-main",
+    "occurred_at": "2026-10-03T12:40:00+08:00",
+    "version": 2,
+    "summary": "售票页仍显示大量余票",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "scenic_area",
+      "location_id": "gate-main",
+      "window": {
+        "starts_at": "2026-10-03T12:30:00+08:00",
+        "ends_at": "2026-10-03T13:00:00+08:00",
+        "granularity_minutes": 30
+      },
+      "metric": {
+        "code": "tickets_sellable",
+        "unit": "张",
+        "basis": "measured"
+      },
+      "sellable_quantity": 860,
+      "realtime_occupancy": null,
+      "safety_headroom": null,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:40:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:40:00+08:00",
+        "sensor_id": "ticketing-cloud"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-01",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T12:00:00+08:00",
+    "version": 1,
+    "summary": "西入口接驳站占用与安全余量 12:00",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T11:50:00+08:00",
+        "ends_at": "2026-10-03T12:00:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 480,
+      "safety_headroom": 220,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:00:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:00:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-02",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T12:15:00+08:00",
+    "version": 2,
+    "summary": "西入口接驳站占用与安全余量 12:15",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T12:05:00+08:00",
+        "ends_at": "2026-10-03T12:15:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 580,
+      "safety_headroom": 120,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:15:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:15:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-03",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T12:30:00+08:00",
+    "version": 3,
+    "summary": "西入口接驳站占用与安全余量 12:30",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T12:20:00+08:00",
+        "ends_at": "2026-10-03T12:30:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 655,
+      "safety_headroom": 45,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:30:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:30:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      },
+      "community_impact": {
+        "level": "noticeable",
+        "detail": "排队开始外溢至西入口社区路段"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-04",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T12:40:00+08:00",
+    "version": 4,
+    "summary": "西入口接驳站占用与安全余量 12:40",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T12:30:00+08:00",
+        "ends_at": "2026-10-03T12:40:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 708,
+      "safety_headroom": -8,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:40:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:40:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      },
+      "community_impact": {
+        "level": "disrupted",
+        "detail": "接驳站排队外溢，影响附近居民道路出行"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-05",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T12:50:00+08:00",
+    "version": 5,
+    "summary": "西入口接驳站占用与安全余量 12:50",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T12:40:00+08:00",
+        "ends_at": "2026-10-03T12:50:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 640,
+      "safety_headroom": 60,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:50:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:50:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      },
+      "community_impact": {
+        "level": "disrupted",
+        "detail": "限流启动后队伍仍在消化"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-06",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T13:05:00+08:00",
+    "version": 6,
+    "summary": "西入口接驳站占用与安全余量 13:05",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T12:55:00+08:00",
+        "ends_at": "2026-10-03T13:05:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 605,
+      "safety_headroom": 95,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T13:05:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T13:05:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      },
+      "community_impact": {
+        "level": "noticeable",
+        "detail": "外溢缓解"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-07",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T13:20:00+08:00",
+    "version": 7,
+    "summary": "西入口接驳站占用与安全余量 13:20",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T13:10:00+08:00",
+        "ends_at": "2026-10-03T13:20:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 590,
+      "safety_headroom": 110,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T13:20:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T13:20:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      },
+      "community_impact": {
+        "level": "noticeable",
+        "detail": "接近恢复阈值"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-08",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T13:35:00+08:00",
+    "version": 8,
+    "summary": "西入口接驳站占用与安全余量 13:35",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T13:25:00+08:00",
+        "ends_at": "2026-10-03T13:35:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 565,
+      "safety_headroom": 135,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T13:35:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T13:35:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-09",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west",
+    "occurred_at": "2026-10-03T13:50:00+08:00",
+    "version": 9,
+    "summary": "西入口接驳站占用与安全余量 13:50",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T13:40:00+08:00",
+        "ends_at": "2026-10-03T13:50:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_slots_headroom",
+        "unit": "人",
+        "basis": "measured",
+        "counting_rule": "接驳站排队容量余量=设计容量-在队人数"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 558,
+      "safety_headroom": 142,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T13:50:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T13:50:00+08:00",
+        "sensor_id": "shuttle-cam-west"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-pub-01",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west-pub",
+    "occurred_at": "2026-10-03T12:30:00+08:00",
+    "version": 1,
+    "summary": "西入口接驳排队较长，建议改走东门或延后前往",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T12:20:00+08:00",
+        "ends_at": "2026-10-03T12:30:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_status_band",
+        "unit": "档",
+        "basis": "estimated"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": null,
+      "safety_headroom": null,
+      "service_degradation": {
+        "level": "degraded",
+        "detail": "西入口接驳排队较长，建议改走东门或延后前往"
+      },
+      "confidence": {
+        "level": "medium"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:30:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:30:00+08:00",
+        "sensor_id": "ops-publisher"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-pub-02",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west-pub",
+    "occurred_at": "2026-10-03T12:50:00+08:00",
+    "version": 2,
+    "summary": "西入口接驳已限流，新到游客请按引导前往东门线路B，已预约班次照发",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T12:40:00+08:00",
+        "ends_at": "2026-10-03T12:50:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_status_band",
+        "unit": "档",
+        "basis": "estimated"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": null,
+      "safety_headroom": null,
+      "service_degradation": {
+        "level": "severely_degraded",
+        "detail": "西入口接驳已限流，新到游客请按引导前往东门线路B，已预约班次照发"
+      },
+      "confidence": {
+        "level": "medium"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:50:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:50:00+08:00",
+        "sensor_id": "ops-publisher"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-shuttle-pub-03",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-shuttle-west-pub",
+    "occurred_at": "2026-10-03T13:35:00+08:00",
+    "version": 3,
+    "summary": "西入口接驳秩序恢复，可正常前往",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "window": {
+        "starts_at": "2026-10-03T13:25:00+08:00",
+        "ends_at": "2026-10-03T13:35:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "queue_status_band",
+        "unit": "档",
+        "basis": "estimated"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": null,
+      "safety_headroom": null,
+      "service_degradation": {
+        "level": "normal"
+      },
+      "confidence": {
+        "level": "medium"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T13:35:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T13:35:00+08:00",
+        "sensor_id": "ops-publisher"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-card-01",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-card-terminal-07",
+    "occurred_at": "2026-10-03T12:00:00+08:00",
+    "version": 1,
+    "summary": "外卡受理终端占用 60%",
+    "payload": {
+      "owner": "tax_refund_shop",
+      "location_id": "tfs-07",
+      "window": {
+        "starts_at": "2026-10-03T12:00:00+08:00",
+        "ends_at": "2026-10-03T12:05:00+08:00",
+        "granularity_minutes": 5
+      },
+      "metric": {
+        "code": "terminal_saturation_pct",
+        "unit": "%",
+        "basis": "measured"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 60,
+      "safety_headroom": 40,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:00:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:00:00+08:00",
+        "sensor_id": "pos-07"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-firstaid-01",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-firstaid-i18n",
+    "occurred_at": "2026-10-03T12:10:00+08:00",
+    "version": 1,
+    "summary": "多语急救两组值班中",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area"
+      ]
+    },
+    "payload": {
+      "owner": "medical_post",
+      "location_id": "first-aid-center",
+      "window": {
+        "starts_at": "2026-10-03T12:00:00+08:00",
+        "ends_at": "2026-10-03T12:30:00+08:00",
+        "granularity_minutes": 30
+      },
+      "metric": {
+        "code": "multilingual_responder_headroom",
+        "unit": "组",
+        "basis": "measured"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 1,
+      "safety_headroom": 3,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:10:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:10:00+08:00",
+        "sensor_id": "roster"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-firstaid-02",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-firstaid-i18n",
+    "occurred_at": "2026-10-03T12:25:00+08:00",
+    "version": 2,
+    "summary": "多语急救只剩一组值班",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area"
+      ]
+    },
+    "payload": {
+      "owner": "medical_post",
+      "location_id": "first-aid-center",
+      "window": {
+        "starts_at": "2026-10-03T12:10:00+08:00",
+        "ends_at": "2026-10-03T12:40:00+08:00",
+        "granularity_minutes": 30
+      },
+      "metric": {
+        "code": "multilingual_responder_headroom",
+        "unit": "组",
+        "basis": "measured"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 3,
+      "safety_headroom": 1,
+      "service_degradation": {
+        "level": "severely_degraded",
+        "detail": "多语急救只有一组值班人员，第二组在山下"
+      },
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:25:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:25:00+08:00",
+        "sensor_id": "roster"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-community-01",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-community-road-west",
+    "occurred_at": "2026-10-03T12:10:00+08:00",
+    "version": 1,
+    "summary": "社区道路压力 12:10：noticeable",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "community",
+      "location_id": "west-access-road",
+      "window": {
+        "starts_at": "2026-10-03T12:00:00+08:00",
+        "ends_at": "2026-10-03T12:10:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "road_impact_index",
+        "unit": "指数",
+        "basis": "estimated"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 65,
+      "safety_headroom": 35,
+      "confidence": {
+        "level": "medium"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:10:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:10:00+08:00",
+        "sensor_id": "community-traffic-w"
+      },
+      "community_impact": {
+        "level": "noticeable",
+        "detail": "西入口周边车流量升高，居民出行略有延迟"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-community-02",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-community-road-west",
+    "occurred_at": "2026-10-03T12:50:00+08:00",
+    "version": 2,
+    "summary": "社区道路压力 12:50：disrupted",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "community",
+      "location_id": "west-access-road",
+      "window": {
+        "starts_at": "2026-10-03T12:40:00+08:00",
+        "ends_at": "2026-10-03T12:50:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "road_impact_index",
+        "unit": "指数",
+        "basis": "estimated"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 88,
+      "safety_headroom": 12,
+      "confidence": {
+        "level": "medium"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:50:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:50:00+08:00",
+        "sensor_id": "community-traffic-w"
+      },
+      "community_impact": {
+        "level": "disrupted",
+        "detail": "游客排队与接驳车辆外溢，社区道路拥堵，建议社会车辆绕行外环"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-community-03",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-community-road-west",
+    "occurred_at": "2026-10-03T13:20:00+08:00",
+    "version": 3,
+    "summary": "社区道路压力 13:20：noticeable",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "community",
+      "location_id": "west-access-road",
+      "window": {
+        "starts_at": "2026-10-03T13:10:00+08:00",
+        "ends_at": "2026-10-03T13:20:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "road_impact_index",
+        "unit": "指数",
+        "basis": "estimated"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 65,
+      "safety_headroom": 35,
+      "confidence": {
+        "level": "medium"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T13:20:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T13:20:00+08:00",
+        "sensor_id": "community-traffic-w"
+      },
+      "community_impact": {
+        "level": "noticeable",
+        "detail": "分流后社区路段回落"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-community-04",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-community-road-west",
+    "occurred_at": "2026-10-03T13:35:00+08:00",
+    "version": 4,
+    "summary": "社区道路压力 13:35：none",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "owner": "community",
+      "location_id": "west-access-road",
+      "window": {
+        "starts_at": "2026-10-03T13:25:00+08:00",
+        "ends_at": "2026-10-03T13:35:00+08:00",
+        "granularity_minutes": 10
+      },
+      "metric": {
+        "code": "road_impact_index",
+        "unit": "指数",
+        "basis": "estimated"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 30,
+      "safety_headroom": 70,
+      "confidence": {
+        "level": "medium"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T13:35:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T13:35:00+08:00",
+        "sensor_id": "community-traffic-w"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-lodging-01",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-lodging-west",
+    "occurred_at": "2026-10-03T12:05:00+08:00",
+    "version": 1,
+    "summary": "片区住宿吸纳能力上报",
+    "payload": {
+      "owner": "lodging",
+      "location_id": "west-cluster",
+      "window": {
+        "starts_at": "2026-10-03T12:00:00+08:00",
+        "ends_at": "2026-10-03T13:00:00+08:00",
+        "granularity_minutes": 60
+      },
+      "metric": {
+        "code": "rooms_available",
+        "unit": "间",
+        "basis": "measured"
+      },
+      "sellable_quantity": 210,
+      "realtime_occupancy": 1820,
+      "safety_headroom": 210,
+      "confidence": {
+        "level": "high"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:05:00+08:00",
+        "transmission": "live",
+        "ingested_at": "2026-10-03T12:05:00+08:00",
+        "sensor_id": "pms-aggregate"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-pressure-01",
+    "event_type": "PRESSURE_DETECTED",
+    "aggregate_type": "pressure_signal",
+    "aggregate_id": "sig-shuttle-west-20261003-01",
+    "occurred_at": "2026-10-03T12:40:00+08:00",
+    "version": 1,
+    "correlation_id": "INC-20261003-WESTGATE-01",
+    "summary": "西入口接驳站安全余量耗尽并外溢社区道路（售票页仍有余票）",
+    "caused_by": "zjj-cap-shuttle-04",
+    "data_sharing": {
+      "visibility": "partners",
+      "purpose": "current_safeguard_only",
+      "allowed_partners": [
+        "scenic_area",
+        "community"
+      ]
+    },
+    "payload": {
+      "owner": "transport",
+      "location_id": "shuttle-west-gate",
+      "pressure_kind": "shuttle_queue",
+      "severity": "critical",
+      "source_capacity_id": "cap-shuttle-west",
+      "observed_value": -8,
+      "threshold_value": 0,
+      "metric_code": "queue_slots_headroom",
+      "window": {
+        "starts_at": "2026-10-03T12:30:00+08:00",
+        "ends_at": "2026-10-03T12:40:00+08:00",
+        "granularity_minutes": 10
+      }
+    }
+  },
+  {
+    "event_id": "zjj-plan-01",
+    "event_type": "DIVERSION_PROPOSED",
+    "aggregate_type": "diversion_plan",
+    "aggregate_id": "plan-sig-shuttle-west-20261003-01",
+    "occurred_at": "2026-10-03T12:42:00+08:00",
+    "version": 1,
+    "correlation_id": "INC-20261003-WESTGATE-01",
+    "caused_by": "zjj-pressure-01",
+    "summary": "协调系统提出错峰、东线绕行与增车建议；既有预约照常履约",
+    "payload": {
+      "proposed_by": "coordination-system",
+      "pressure_event_id": "zjj-pressure-01",
+      "options": [
+        {
+          "option_type": "alternative_time_window",
+          "description": "向未到达游客建议改约 60 分钟后接驳班次（改签须本人同意）",
+          "estimated_relief_pct": 25
+        },
+        {
+          "option_type": "alternative_route",
+          "description": "引导至东门备用接驳线路 B，绕开饱和站点",
+          "estimated_relief_pct": 30
+        },
+        {
+          "option_type": "alternative_resource",
+          "description": "临时增开 2 台接驳车，需交通值班方确认调派",
+          "estimated_relief_pct": 35
+        }
+      ],
+      "protected_commitments": [
+        {
+          "commitment_ref": "BK-G7781-20261003",
+          "holder_kind": "large_group",
+          "handling": "honor"
+        },
+        {
+          "commitment_ref": "FIT-EN-9917",
+          "holder_kind": "independent_traveler",
+          "handling": "offer_reschedule_with_consent"
+        }
+      ]
+    }
+  },
+  {
+    "event_id": "zjj-decision-01",
+    "event_type": "ACTION_CONFIRMED",
+    "aggregate_type": "operating_decision",
+    "aggregate_id": "throttle-sig-shuttle-west-20261003-01",
+    "occurred_at": "2026-10-03T12:45:00+08:00",
+    "version": 1,
+    "correlation_id": "INC-20261003-WESTGATE-01",
+    "caused_by": "zjj-plan-01",
+    "summary": "交通值班经理确认西入口接驳限流并启用东线绕行，附明确恢复条件",
+    "data_sharing": {
+      "visibility": "public",
+      "purpose": "current_safeguard_only"
+    },
+    "payload": {
+      "decision": "throttle_entry",
+      "confirmed_by": {
+        "owner": "transport",
+        "role": "接驳运营值班经理",
+        "party": "transport-duty-w03"
+      },
+      "plan_event_id": "zjj-plan-01",
+      "pressure_event_id": "zjj-pressure-01",
+      "scope": "西入口接驳站只出不进，新到游客引导东门线路B；团队 BK-G7781 已约班次照发",
+      "recovery_condition": {
+        "metric_code": "queue_slots_headroom",
+        "source_capacity_id": "cap-shuttle-west",
+        "observed_field": "safety_headroom",
+        "comparator": "above",
+        "restore_below": 120,
+        "hold_minutes": 15,
+        "also_require": [
+          "community_impact:none"
+        ]
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-card-02",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-card-terminal-07",
+    "occurred_at": "2026-10-03T12:20:00+08:00",
+    "version": 2,
+    "summary": "【断网补传】终端占用 88%",
+    "payload": {
+      "owner": "tax_refund_shop",
+      "location_id": "tfs-07",
+      "window": {
+        "starts_at": "2026-10-03T12:15:00+08:00",
+        "ends_at": "2026-10-03T12:20:00+08:00",
+        "granularity_minutes": 5
+      },
+      "metric": {
+        "code": "terminal_saturation_pct",
+        "unit": "%",
+        "basis": "measured"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 88,
+      "safety_headroom": 12,
+      "service_degradation": {
+        "level": "degraded",
+        "detail": "外卡受理点接近饱和"
+      },
+      "confidence": {
+        "level": "medium",
+        "note": "终端本地缓存，补传数据"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:20:00+08:00",
+        "transmission": "backfill",
+        "ingested_at": "2026-10-03T12:40:00+08:00",
+        "sensor_id": "pos-07"
+      }
+    }
+  },
+  {
+    "event_id": "zjj-cap-card-03",
+    "event_type": "CAPACITY_REPORTED",
+    "aggregate_type": "capacity_source",
+    "aggregate_id": "cap-card-terminal-07",
+    "occurred_at": "2026-10-03T12:33:00+08:00",
+    "version": 3,
+    "summary": "【断网补传】终端占用 97%",
+    "payload": {
+      "owner": "tax_refund_shop",
+      "location_id": "tfs-07",
+      "window": {
+        "starts_at": "2026-10-03T12:30:00+08:00",
+        "ends_at": "2026-10-03T12:35:00+08:00",
+        "granularity_minutes": 5
+      },
+      "metric": {
+        "code": "terminal_saturation_pct",
+        "unit": "%",
+        "basis": "measured"
+      },
+      "sellable_quantity": null,
+      "realtime_occupancy": 97,
+      "safety_headroom": 3,
+      "service_degradation": {
+        "level": "severely_degraded",
+        "detail": "外卡受理点接近饱和，等待明显拉长"
+      },
+      "confidence": {
+        "level": "medium",
+        "note": "终端本地缓存，补传数据"
+      },
+      "collection": {
+        "observed_at": "2026-10-03T12:33:00+08:00",
+        "transmission": "backfill",
+        "ingested_at": "2026-10-03T12:40:00+08:00",
+        "sensor_id": "pos-07"
+      }
+    }
+  }
+]
