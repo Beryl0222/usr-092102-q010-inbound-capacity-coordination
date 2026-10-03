@@ -1,5 +1,12 @@
 [project]
 name = "domain-event-contract"
-version = "0.1.0"
-description = "领域事件基础校验"
+version = "0.2.0"
+description = "入境游跨机构承载协调：领域事件契约、断网重放与限流协同参考实现"
 requires-python = ">=3.11"
+
+[project.optional-dependencies]
+# 仅用于按 JSON Schema 做契约校验；核心代码不依赖第三方库
+contract = ["jsonschema>=4"]
+
+[tool.unittest]
+start-dir = "tests"

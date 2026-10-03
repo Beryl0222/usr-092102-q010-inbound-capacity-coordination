@@ -1,6 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://inbound-capacity-coordination.local/contracts/domain.schema.json",
   "title": "入境游承载协调领域事件",
+  "description": "景区、交通、住宿、退税商店、医疗点与社区之间的承载协调事件。信封兼容 v0.1（event_id/event_type/aggregate_type/aggregate_id/occurred_at/version/summary），新增字段均可选，旧生产方无需改造即可被新消费方读取。",
   "type": "object",
   "required": [
     "event_id",
@@ -41,16 +43,570 @@
     },
     "occurred_at": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "事件在现场实际发生的时间。断网传感器恢复连接后补报时，occurred_at 仍必须是当时的读数时间；重放与排序一律以它为准，而不是接收时间。"
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "协调平台接收时间。正常情况与 occurred_at 接近；断网传感器补报时显著晚于 occurred_at，是识别迟到事件的依据。"
+    },
+    "time_window": {
+      "type": "object",
+      "description": "读数/信号/方案对应的业务时间窗（必须带时区偏移）。",
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "string", "format": "date-time" },
+        "end": { "type": "string", "format": "date-time" }
+      }
     },
     "version": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 1,
+      "description": "同一 aggregate_id 内严格递增的版本号，用于并发与补报冲突检测。"
     },
     "summary": {
       "type": "string",
       "minLength": 1
+    },
+    "source": {
+      "type": "object",
+      "description": "事件来源机构与采集方式，支撑可信度判断与责任追溯。",
+      "required": ["org_id"],
+      "properties": {
+        "org_id": { "type": "string", "minLength": 1 },
+        "org_name": { "type": "string" },
+        "sensor_id": { "type": "string" },
+        "ingest": {
+          "type": "string",
+          "enum": ["live", "backfill_after_outage", "manual_correction"],
+          "description": "live=在线实时；backfill_after_outage=断网恢复后补报；manual_correction=人工更正。"
+        },
+        "outage": {
+          "type": "object",
+          "description": "断网情况：断网开始/恢复与补报原因。",
+          "properties": {
+            "lost_at": { "type": "string", "format": "date-time" },
+            "recovered_at": { "type": "string", "format": "date-time" }
+          }
+        }
+      }
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "同一次限流协同链路的关联标识：从触发信号、提案、决定到恢复共享同一值，用于端到端追踪。"
+    },
+    "causation_id": {
+      "type": "string",
+      "description": "直接导致本事件的上游事件 event_id，形成因果链。"
+    },
+    "confidence": {
+      "$ref": "#/$defs/confidence_enum"
+    },
+    "payload": {
+      "type": "object",
+      "description": "按 event_type 区分的业务负载，结构见各事件定义；事件之间通过 payload 中的标识相互引用。"
     }
   },
-  "additionalProperties": true
+  "allOf": [
+    {
+      "if": { "properties": { "event_type": { "const": "CAPACITY_REPORTED" } } },
+      "then": {
+        "properties": {
+          "aggregate_type": { "const": "capacity_source" },
+          "payload": { "$ref": "#/$defs/CAPACITY_REPORTED" }
+        },
+        "required": ["payload"]
+      }
+    },
+    {
+      "if": { "properties": { "event_type": { "const": "PRESSURE_DETECTED" } } },
+      "then": {
+        "properties": {
+          "aggregate_type": { "const": "pressure_signal" },
+          "payload": { "$ref": "#/$defs/PRESSURE_DETECTED" }
+        },
+        "required": ["payload"]
+      }
+    },
+    {
+      "if": { "properties": { "event_type": { "const": "DIVERSION_PROPOSED" } } },
+      "then": {
+        "properties": {
+          "aggregate_type": { "const": "diversion_plan" },
+          "payload": { "$ref": "#/$defs/DIVERSION_PROPOSED" }
+        },
+        "required": ["payload"]
+      }
+    },
+    {
+      "if": { "properties": { "event_type": { "const": "ACTION_CONFIRMED" } } },
+      "then": {
+        "properties": {
+          "aggregate_type": { "const": "operating_decision" },
+          "payload": { "$ref": "#/$defs/ACTION_CONFIRMED" }
+        },
+        "required": ["payload"]
+      }
+    },
+    {
+      "if": { "properties": { "event_type": { "const": "NORMAL_SERVICE_RESTORED" } } },
+      "then": {
+        "properties": {
+          "aggregate_type": { "const": "operating_decision" },
+          "payload": { "$ref": "#/$defs/NORMAL_SERVICE_RESTORED" }
+        },
+        "required": ["payload"]
+      }
+    }
+  ],
+  "$defs": {
+    "confidence_enum": {
+      "type": "string",
+      "enum": ["confirmed", "high", "medium", "low", "stale", "unverified"]
+    },
+    "confidence_with_reason": {
+      "type": "object",
+      "required": ["level"],
+      "properties": {
+        "level": { "$ref": "#/$defs/confidence_enum" },
+        "reason": { "type": "string" }
+      }
+    },
+    "data_categories_enum": {
+      "type": "string",
+      "enum": [
+        "anonymous_grid_location",
+        "language_preference",
+        "reservation_count",
+        "staff_roster_duty",
+        "police_report",
+        "ticket_system_pull",
+        "manual_report",
+        "forecast_model_output",
+        "gate_count_dedup",
+        "queue_registry_half",
+        "community_report"
+      ]
+    },
+    "severity_enum": {
+      "type": "string",
+      "enum": ["watch", "warning", "critical"]
+    },
+    "dimension_enum": {
+      "type": "string",
+      "enum": [
+        "scenic_area_entry",
+        "transport_shuttle",
+        "accommodation",
+        "tax_refund_shop",
+        "medical_point",
+        "community_road"
+      ]
+    },
+    "resource_kind_enum": {
+      "type": "string",
+      "enum": [
+        "shuttle_bus",
+        "entry_gate",
+        "ticketing_window",
+        "foreign_card_pos",
+        "multilingual_first_aid_team",
+        "road_lane",
+        "parking",
+        "staffing"
+      ]
+    },
+    "window": {
+      "type": "object",
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "string", "format": "date-time" },
+        "end": { "type": "string", "format": "date-time" }
+      }
+    },
+    "metric_enum": {
+      "type": "string",
+      "description": "可售数量、实时占用、安全余量、服务降级、居民影响分别是不同指标，禁止合并成一个游客总量。",
+      "enum": [
+        "tickets_available",
+        "tickets_sold_booked",
+        "occupancy_rate",
+        "queue_length_minutes",
+        "safety_headcount_limit",
+        "safety_margin",
+        "staff_on_duty_stations",
+        "staff_idle_ratio",
+        "infrastructure_saturation",
+        "forecast_arrivals",
+        "resident_road_impact_level",
+        "service_degradation_level",
+        "wait_time_minutes"
+      ]
+    },
+    "reading": {
+      "type": "object",
+      "required": ["metric", "value"],
+      "properties": {
+        "metric": { "$ref": "#/$defs/metric_enum" },
+        "value": { "type": "number" },
+        "unit": {
+          "type": "string",
+          "description": "如 person / person_trip / pct / minute / level。"
+        },
+        "basis": {
+          "type": "string",
+          "description": "统计口径：该数值如何统计（如 闸门计数去重、排队登记折半、警方口头反馈、票务系统拉单）。"
+        },
+        "confidence": { "$ref": "#/$defs/confidence_enum" },
+        "confidence_reason": { "type": "string" }
+      }
+    },
+    "CAPACITY_REPORTED": {
+      "type": "object",
+      "description": "某容量来源在某个时间窗的分项读数。每条消息只承载一个来源、一个时间窗，指标可多个。",
+      "required": ["scope", "window", "readings"],
+      "properties": {
+        "scope": {
+          "type": "object",
+          "required": ["dimension", "source_id"],
+          "properties": {
+            "dimension": { "$ref": "#/$defs/dimension_enum" },
+            "source_id": { "type": "string" },
+            "label": { "type": "string" }
+          }
+        },
+        "window": { "$ref": "#/$defs/window" },
+        "readings": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/reading" }
+        },
+        "data_categories": {
+          "type": "array",
+          "description": "本次上报用到的数据类别，用于核对最小必要与目的限制。位置信息默认是分段网格的匿名位置。",
+          "items": { "$ref": "#/$defs/data_categories_enum" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "PRESSURE_DETECTED": {
+      "type": "object",
+      "description": "基于容量读数与预测得到的局部压力信号，指向具体维度与环节，而非一个总游客数。",
+      "required": ["scope", "severity", "window", "based_on"],
+      "properties": {
+        "scope": {
+          "type": "object",
+          "required": ["dimension", "source_id"],
+          "properties": {
+            "dimension": { "$ref": "#/$defs/dimension_enum" },
+            "source_id": { "type": "string" },
+            "label": { "type": "string" }
+          }
+        },
+        "severity": { "$ref": "#/$defs/severity_enum" },
+        "window": { "$ref": "#/$defs/window" },
+        "based_on": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "触发该信号的 CAPACITY_REPORTED 事件 event_id 列表。"
+        },
+        "bottleneck_metric": { "$ref": "#/$defs/metric_enum" },
+        "observed_value": { "type": "number" },
+        "threshold_value": { "type": "number" },
+        "minutes_to_breach": {
+          "type": ["number", "null"],
+          "description": "按当前趋势预计多少分钟后失守阈值；已失守为 0，无法估计为 null。值班视图据此排序下一处失守环节。"
+        },
+        "service_degradation_level": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "0=正常，1=轻微降级，2=明显降级（如外卡受理点只开部分窗口），3=严重降级。"
+        },
+        "resident_impact": {
+          "type": "object",
+          "description": "对附近居民的影响单独成项，不与游客体验指标混算。",
+          "properties": {
+            "road_impact_level": { "type": "integer", "minimum": 0, "maximum": 3 },
+            "detail": { "type": "string" }
+          }
+        },
+        "confidence": { "$ref": "#/$defs/confidence_enum" },
+        "message": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "DIVERSION_PROPOSED": {
+      "type": "object",
+      "description": "系统只能提出替代时段、线路或资源方案，不能自行关闭入口或改变运营。",
+      "required": ["trigger_signal_ids", "alternatives"],
+      "properties": {
+        "trigger_signal_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "forecast_factors": {
+          "type": "object",
+          "description": "预测影响因子：大型团队、散客、免签政策变化；只影响方案生成，绝不静默取消既有预约。",
+          "properties": {
+            "group_arrivals": { "type": "number", "description": "时间窗内预计大型团队人次。" },
+            "independent_arrivals": { "type": "number", "description": "时间窗内预计散客人次。" },
+            "visa_free_policies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["policy_id", "change", "confidence"],
+                "properties": {
+                  "policy_id": { "type": "string" },
+                  "change": {
+                    "type": "string",
+                    "enum": ["extended", "restricted", "new_market_opened", "new_market_closed"]
+                  },
+                  "effective_at": { "type": "string", "format": "date-time" },
+                  "confidence": { "$ref": "#/$defs/confidence_with_reason" }
+                }
+              }
+            },
+            "notes": { "type": "string" }
+          }
+        },
+        "alternatives": {
+          "type": "object",
+          "description": "替代方案：时段、线路、资源三个方向至少给出一个。",
+          "properties": {
+            "time_slots": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["window", "estimated_relief_pct"],
+                "properties": {
+                  "window": { "$ref": "#/$defs/window" },
+                  "estimated_relief_pct": { "type": "number" },
+                  "confidence": { "$ref": "#/$defs/confidence_with_reason" },
+                  "applies_to_dimensions": {
+                    "type": "array",
+                    "description": "该替代时段针对哪些维度；合作机构最小信息包据此过滤，只收到与自己相关的项。",
+                    "items": { "$ref": "#/$defs/dimension_enum" }
+                  }
+                }
+              }
+            },
+            "routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["route_id", "estimated_relief_pct"],
+                "properties": {
+                  "route_id": { "type": "string" },
+                  "label": { "type": "string" },
+                  "estimated_relief_pct": { "type": "number" },
+                  "confidence": { "$ref": "#/$defs/confidence_with_reason" },
+                  "applies_to_dimensions": {
+                    "type": "array",
+                    "items": { "$ref": "#/$defs/dimension_enum" }
+                  }
+                }
+              }
+            },
+            "resources": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["resource", "estimated_relief_pct"],
+                "properties": {
+                  "resource": {
+                    "type": "object",
+                    "required": ["kind", "target_id"],
+                    "properties": {
+                      "kind": { "$ref": "#/$defs/resource_kind_enum" },
+                      "target_id": { "type": "string" },
+                      "label": { "type": "string" }
+                    }
+                  },
+                  "estimated_relief_pct": { "type": "number" },
+                  "confidence": { "$ref": "#/$defs/confidence_with_reason" },
+                  "applies_to_dimensions": {
+                    "type": "array",
+                    "items": { "$ref": "#/$defs/dimension_enum" }
+                  }
+                }
+              }
+            }
+          },
+          "anyOf": [
+            { "required": ["time_slots"] },
+            { "required": ["routes"] },
+            { "required": ["resources"] }
+          ]
+        },
+        "affected_reservations": {
+          "type": "array",
+          "description": "方案涉及的既有预约只呈现数量与处理原则；处理原则只能是 honor（继续兑现）或 offer_choice（提供等价选择但保留原预约），不允许静默取消。",
+          "items": {
+            "type": "object",
+            "required": ["count", "treatment"],
+            "properties": {
+              "count": { "type": "integer", "minimum": 0 },
+              "treatment": {
+                "type": "string",
+                "enum": ["honor", "offer_choice"]
+              }
+            }
+          }
+        },
+        "proposed_by": {
+          "type": "string",
+          "description": "生成方案的服务身份，如 coordination-engine:v3。"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ACTION_CONFIRMED": {
+      "type": "object",
+      "description": "相应责任方对运营动作的确认。没有 ACTION_CONFIRMED，入口不会关闭、运营参数不会改变；DIVERSION_PROPOSED 本身不改变现场。责任方也可以拒绝（rejected）。",
+      "required": ["proposal_id", "action", "confirmed_by", "authority", "decision_basis"],
+      "properties": {
+        "proposal_id": { "type": "string" },
+        "action": {
+          "type": "object",
+          "required": ["kind", "scope_ids", "window"],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "hold_entry",
+                "limit_ticketing",
+                "divert_traffic_control",
+                "add_shuttle_capacity",
+                "deploy_emergency_staffing",
+                "open_backup_lane",
+                "communicate_advisory"
+              ]
+            },
+            "scope_ids": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": "string" }
+            },
+            "window": { "$ref": "#/$defs/window" }
+          }
+        },
+        "confirmed_by": {
+          "type": "object",
+          "required": ["org_id", "role"],
+          "properties": {
+            "org_id": { "type": "string" },
+            "role": { "type": "string" },
+            "person_ref": {
+              "type": "string",
+              "description": "工号或值班代号，不使用姓名。"
+            }
+          }
+        },
+        "authority": {
+          "type": "string",
+          "description": "责任边界：该组织被授权决定的事项（如 本景区入口放行规则）。"
+        },
+        "decision_basis": {
+          "type": "object",
+          "required": ["signal_ids", "proposal_id"],
+          "properties": {
+            "signal_ids": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "proposal_id": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        },
+        "reservation_commitment_policy": {
+          "type": "string",
+          "enum": ["honor_all", "offer_choice_no_cancel", "other"],
+          "description": "确认动作时对既有预约承诺的约束；other 需在注释说明且仍不得静默取消。"
+        },
+        "recovery_conditions": {
+          "type": "array",
+          "description": "动作生效前设定的恢复条件：出现什么证据、持续多久才解除限流。",
+          "items": {
+            "type": "object",
+            "required": ["condition_id", "metric", "operator", "threshold", "window"],
+            "properties": {
+              "condition_id": { "type": "string" },
+              "metric": { "$ref": "#/$defs/metric_enum" },
+              "operator": {
+                "type": "string",
+                "enum": ["lte", "lt", "gte", "gt", "eq"]
+              },
+              "threshold": { "type": "number" },
+              "window": { "$ref": "#/$defs/window" },
+              "evidence_source_ids": {
+                "type": "array",
+                "description": "作为证据的容量来源 id；可跨机构（如景区解除限流需引用交通局的排队读数）。缺省取 action.scope_ids。",
+                "items": { "type": "string" }
+              },
+              "sustain_minutes": { "type": "integer", "minimum": 1 }
+            }
+          }
+        },
+        "rejected": {
+          "type": "object",
+          "description": "责任方拒绝提案时填写，决定链仍被记录。",
+          "required": ["reason"],
+          "properties": {
+            "reason": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "NORMAL_SERVICE_RESTORED": {
+      "type": "object",
+      "required": ["decision_id", "evidence"],
+      "properties": {
+        "decision_id": {
+          "type": "string",
+          "description": "对应 ACTION_CONFIRMED 事件的 event_id。"
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["condition_id", "metric", "observed", "window", "confidence"],
+            "properties": {
+              "condition_id": { "type": "string" },
+              "metric": { "$ref": "#/$defs/metric_enum" },
+              "observed": { "type": "number" },
+              "operator": {
+                "type": "string",
+                "enum": ["lte", "lt", "gte", "gt", "eq"]
+              },
+              "threshold": { "type": "number" },
+              "window": { "$ref": "#/$defs/window" },
+              "confidence": { "$ref": "#/$defs/confidence_enum" }
+            }
+          }
+        },
+        "residual_risk_level": {
+          "type": "string",
+          "enum": ["none", "low", "medium", "high"]
+        },
+        "resolved_by": {
+          "type": "object",
+          "required": ["org_id", "role"],
+          "properties": {
+            "org_id": { "type": "string" },
+            "role": { "type": "string" },
+            "person_ref": { "type": "string" }
+          }
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
 }
